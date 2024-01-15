@@ -1,0 +1,46 @@
+# Create an Azure Pipeline that runs on a daily schedule, 1:00 AM UTC, to backup the APIM instance.
+# The pipeline will run the Powershell script Backup-Api-Management.ps1 located in the ../scripts folder,
+# relative to the location of the pipeline yaml.  The pipeline should run a sinlge job on the Microsoft Hosted
+# Ubuntu 22.04 agent.  The pipeline job should use the Azure Powershell task to execute the Powershell script
+# mentioned above.  The script requires the following parameters:
+# - ApiManagementName: The name of the APIM instance to backup
+# - ApiManagementResourceGroup: The resource group containing the APIM instance
+# - StorageAccountName: The name of the storage account to store the backup
+# - StorageResourceGroup: The resource group containing the storage account
+# - ContainerName: The name of the storage container to store the backup
+#
+# The value for these parameters should be sourced from pipeline variables defined
+# inline in the yaml.  
+
+schedules:
+- cron: "0 1 * * *"
+  displayName: Daily at 1:00 AM UTC
+  branches:
+    include:
+    - main
+  always: true
+
+pool:
+  vmImage: ubuntu-22.04
+
+variables:
+- name: ApiManagementName
+  value: 'apim-dr-apim'
+- name: ApiManagementResourceGroup
+  value: 'APIM-DR'
+- name: StorageAccountName
+  value: 'apimdrbackup'
+- name: StorageResourceGroup
+  value: 'APIM-DR'
+- name: ContainerName
+  value: 'apim-backups'
+
+steps:
+- task: AzurePowerShell@5
+  displayName: 'Backup APIM'
+  inputs:
+    azureSubscription: 'Azure Subscription'
+    ScriptType: 'FilePath'
+    ScriptPath: '../scripts/Backup-Api-Management.ps1'
+    ScriptArguments: '-ApiManagementName $(ApiManagementName) -ApiManagementResourceGroup $(ApiManagementResourceGroup) -StorageAccountName $(StorageAccountName) -StorageResourceGroup $(StorageResourceGroup) -ContainerName $(ContainerName)'
+    azurePowerShellVersion: 'LatestVersion'
