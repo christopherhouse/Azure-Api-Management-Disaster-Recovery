@@ -41,6 +41,6 @@ steps:
   inputs:
     azureSubscription: 'Christopher House - Internal Demo Sub'
     ScriptType: 'FilePath'
-    ScriptPath: '../scripts/Backup-Api-Management.ps1'
+    ScriptPath: '$(System.DefaultWorkingDirectory)/.pipelines/scripts/Backup-Api-Management.ps1'
     ScriptArguments: '-ApiManagementName $(ApiManagementName) -ApiManagementResourceGroup $(ApiManagementResourceGroup) -StorageAccountName $(StorageAccountName) -StorageResourceGroup $(StorageResourceGroup) -ContainerName $(ContainerName)'
     azurePowerShellVersion: 'LatestVersion'
