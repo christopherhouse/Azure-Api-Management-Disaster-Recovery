@@ -29,8 +29,7 @@ parameters:
 - name: BackupFileName
   type: string
 
-triggers:
-- none
+triggers: none
 
 steps:
 - task: AzurePowerShell@5
