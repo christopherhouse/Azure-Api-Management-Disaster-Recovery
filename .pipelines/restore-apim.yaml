@@ -16,6 +16,9 @@
 # The Azure Powershell task should be configured to use the Service Connection
 # provided in the parameter ServiceConnectionName.
 parameters:
+- name: DeployInfrastructure
+  type: boolean
+  default: false
 - name: ApiManagementName
   type: string
 - name: ApiManagementResourceGroup
@@ -28,10 +31,54 @@ parameters:
   type: string
 - name: BackupFileName
   type: string
+- name: Location
+  type: string
+- name: SkuName
+  type: string
+  values:
+  - Developer
+  - Basic
+  - Standard
+  - Premium
+- name: SkuCapacity
+  type: number
+  default: 1
+- name: PublisherEmailAddress
+  type: string
+- name: PublisherName
+  type: string
+- name: VnetIntegrationMode
+  type: string
+  values:
+  - None
+  - External
+  - Internal
+- name: vnetSubnetResourceId
+  type: string
+- name: publicIpResourceId
+  type: string
+- name: ServiceConnectionName
+  type: string
 
 trigger: none
 
+variables:
+  infraTemplate: '$(System.DefaultWorkingDirectory)/.infrastructure/bicep/main.bicep'
+
 steps:
+- task: AzureResourceManagerTemplateDeployment@3
+  displayName: Deploy API Management Resource
+  condition: eq('${{ parameters.DeployInfrastructure }}', true)
+  inputs:
+    deploymentScope: Resource Group
+    azureResourceManagerConnection: ${{ parameters.serviceConnectionName }}
+    resourceGroupName: ${{ parameters.resourceGroupName }}
+    csmFile: $(infraTemplate)
+    csmParametersFile: $(parameterFile)
+    deploymentName: $(Build.BuildId)
+    overrideParameters: '-buildId $(Build.BuildId) -apiManagementServiceName ${{ parameters.ApiManagementName }} -apiManagementResourceGroup ${{ parameters.ApiManagementResourceGroup }} -location ${{ parameters.Location }} -skuName ${{ parameters.SkuName }} -skuCapacity ${{ parameters.SkuCapacity }} -publisherEmailAddress ${{ parameters.PublisherEmailAddress }} -publisherName ${{ parameters.PublisherName }} -vnetIntegrationMode ${{ parameters.VnetIntegrationMode }} -vnetSubnetResourceId ${{ parameters.vnetSubnetResourceId }} -publicIpResourceId ${{ parameters.publicIpResourceId }}'
+    location: ${{ parameters.Location }}
+
 - task: AzurePowerShell@5
   displayName: 'Restore APIM'
   inputs:
