@@ -67,7 +67,7 @@ pool:
 
 variables:
   infraTemplate: '$(System.DefaultWorkingDirectory)/.infrastructure/bicep/main.bicep'
-
+  parameterFile: '$(System.DefaultWorkingDirectory)/.infrastructure/bicep/parameters/main.parameters.json'
 steps:
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: Deploy API Management Resource
@@ -77,8 +77,19 @@ steps:
     azureResourceManagerConnection: ${{ parameters.ServiceConnectionName }}
     resourceGroupName: ${{ parameters.ApiManagementResourceGroup }}
     csmFile: $(infraTemplate)
+    csmParametersFile: $(parameterFile)
     deploymentName: $(Build.BuildId)
-    overrideParameters: '-buildId $(Build.BuildId) -apiManagementServiceName ${{ parameters.ApiManagementName }} -apiManagementResourceGroup ${{ parameters.ApiManagementResourceGroup }} -location ${{ parameters.Location }} -skuName ${{ parameters.SkuName }} -skuCapacity ${{ parameters.SkuCapacity }} -publisherEmailAddress ${{ parameters.PublisherEmailAddress }} -publisherName ${{ parameters.PublisherName }} -vnetIntegrationMode ${{ parameters.VnetIntegrationMode }} -vnetSubnetResourceId ${{ parameters.vnetSubnetResourceId }} -publicIpResourceId ${{ parameters.publicIpResourceId }}'
+    overrideParameters: >-
+      -buildId $(Build.BuildId)
+      -apiManagementServiceName "${{ parameters.ApiManagementName }}"
+      -location "${{ parameters.Location }}"
+      -skuName "${{ parameters.SkuName }}"
+      -skuCapacity ${{ parameters.SkuCapacity }}
+      -publisherEmailAddress "${{ parameters.PublisherEmailAddress }}"
+      -publisherName "${{ parameters.PublisherName }}"
+      -vnetIntegrationMode "${{ parameters.VnetIntegrationMode }}"
+      -vnetSubnetResourceId "${{ parameters.vnetSubnetResourceId }}"
+      -publicIpResourceId "${{ parameters.publicIpResourceId }}"
     location: ${{ parameters.Location }}
 
 - task: AzurePowerShell@5
