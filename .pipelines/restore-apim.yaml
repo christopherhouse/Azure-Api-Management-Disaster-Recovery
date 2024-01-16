@@ -1,0 +1,43 @@
+# create an Azure Pipeline that runs only manually.  The pipeline
+# should require the following input parameters:
+# - ApiManagementName: The name of the APIM instance to restore
+# - ApiManagementResourceGroup: The resource group containing the APIM instance
+# - StorageAccountName: The name of the storage account to restore the backup from
+# - StorageResourceGroup: The resource group containing the storage account
+# - ContainerName: The name of the storage container to restore the backup from
+# - BackupFileName: The name of the backup to restore
+# - ServiceConnectionName
+
+# All parameters are of type string and should be mandatory.  The pipeline
+# will have a single stage and sinlge job that run on the Microsoft Hosted
+# Ubuntu 22.04 agent.  The pipeline job should use the Azure Powershell task
+# to execute the Powershell script Restore-Api-Management.ps1 located in the
+# path $(System.DefaultWorkingDirectory)/.pipelines/scripts/Restore-Api-Management.ps1.
+# The Azure Powershell task should be configured to use the Service Connection
+# provided in the parameter ServiceConnectionName.
+parameters:
+- name: ApiManagementName
+  type: string
+- name: ApiManagementResourceGroup
+  type: string
+- name: StorageAccountName
+  type: string
+- name: StorageResourceGroup
+  type: string
+- name: ContainerName
+  type: string
+- name: BackupFileName
+  type: string
+
+triggers:
+- none
+
+steps:
+- task: AzurePowerShell@5
+  displayName: 'Restore APIM'
+  inputs:
+    azureSubscription: ${{ parameters.ServiceConnectionName }}
+    ScriptType: 'FilePath'
+    ScriptPath: '$(System.DefaultWorkingDirectory)/.pipelines/scripts/Restore-Api-Management.ps1'
+    ScriptArguments: '-ApiManagementName $(ApiManagementName) -ApiManagementResourceGroup $(ApiManagementResourceGroup) -StorageAccountName $(StorageAccountName) -StorageResourceGroup $(StorageResourceGroup) -ContainerName $(ContainerName) -BackupFileName $(BackupFileName)'
+    azurePowerShellVersion: 'LatestVersion'
