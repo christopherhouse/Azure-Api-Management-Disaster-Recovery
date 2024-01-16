@@ -8,7 +8,7 @@ param publisherName string
 param vnetIntegrationMode string
 param vnetSubnetResourceId string
 param publicIpResourceId string
-param buildId string
+param buildId string = ''
 
 var apimDeploymentName = 'apim-deployment-${buildId}'
 
