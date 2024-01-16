@@ -62,6 +62,9 @@ parameters:
 
 trigger: none
 
+pool:
+  vmImage: ubuntu-22.04
+
 variables:
   infraTemplate: '$(System.DefaultWorkingDirectory)/.infrastructure/bicep/main.bicep'
 
