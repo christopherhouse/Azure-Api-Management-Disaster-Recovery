@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiManagementServiceName": {
+      "value": ""
+    },
+    "location": {
+      "value": ""
+    },
+    "skuName": {
+      "value": ""
+    },
+    "skuCapacity": {
+      "value": 0
+    },
+    "publisherEmailAddress": {
+      "value": ""
+    },
+    "publisherName": {
+      "value": ""
+    },
+    "vnetIntegrationMode": {},
+    "vnetSubnetResourceId": {
+      "value": ""
+    },
+    "publicIpResourceId": {
+      "value": ""
+    }
+  }
+}
