@@ -20,7 +20,9 @@
     "publisherName": {
       "value": ""
     },
-    "vnetIntegrationMode": {},
+    "vnetIntegrationMode": {
+      "value": ""
+    },
     "vnetSubnetResourceId": {
       "value": ""
     },
