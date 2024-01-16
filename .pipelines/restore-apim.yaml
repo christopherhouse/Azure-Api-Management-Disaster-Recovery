@@ -77,7 +77,6 @@ steps:
     azureResourceManagerConnection: ${{ parameters.ServiceConnectionName }}
     resourceGroupName: ${{ parameters.ApiManagementResourceGroup }}
     csmFile: $(infraTemplate)
-    csmParametersFile: $(parameterFile)
     deploymentName: $(Build.BuildId)
     overrideParameters: '-buildId $(Build.BuildId) -apiManagementServiceName ${{ parameters.ApiManagementName }} -apiManagementResourceGroup ${{ parameters.ApiManagementResourceGroup }} -location ${{ parameters.Location }} -skuName ${{ parameters.SkuName }} -skuCapacity ${{ parameters.SkuCapacity }} -publisherEmailAddress ${{ parameters.PublisherEmailAddress }} -publisherName ${{ parameters.PublisherName }} -vnetIntegrationMode ${{ parameters.VnetIntegrationMode }} -vnetSubnetResourceId ${{ parameters.vnetSubnetResourceId }} -publicIpResourceId ${{ parameters.publicIpResourceId }}'
     location: ${{ parameters.Location }}
