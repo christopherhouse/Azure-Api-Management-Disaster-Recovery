@@ -71,8 +71,8 @@ steps:
   condition: eq('${{ parameters.DeployInfrastructure }}', true)
   inputs:
     deploymentScope: Resource Group
-    azureResourceManagerConnection: ${{ parameters.serviceConnectionName }}
-    resourceGroupName: ${{ parameters.resourceGroupName }}
+    azureResourceManagerConnection: ${{ parameters.ServiceConnectionName }}
+    resourceGroupName: ${{ parameters.ApiManagementResourceGroup }}
     csmFile: $(infraTemplate)
     csmParametersFile: $(parameterFile)
     deploymentName: $(Build.BuildId)
