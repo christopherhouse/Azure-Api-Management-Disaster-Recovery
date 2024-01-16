@@ -12,6 +12,8 @@
 # The value for these parameters should be sourced from pipeline variables defined
 # inline in the yaml.  
 
+triggers: none
+
 schedules:
 - cron: "0 1 * * *"
   displayName: Daily at 1:00 AM UTC
