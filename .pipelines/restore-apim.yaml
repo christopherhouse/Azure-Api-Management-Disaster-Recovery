@@ -98,5 +98,5 @@ steps:
     azureSubscription: ${{ parameters.ServiceConnectionName }}
     ScriptType: 'FilePath'
     ScriptPath: '$(System.DefaultWorkingDirectory)/.pipelines/scripts/Restore-Api-Management.ps1'
-    ScriptArguments: '-ApiManagementName $(ApiManagementName) -ApiManagementResourceGroup $(ApiManagementResourceGroup) -StorageAccountName $(StorageAccountName) -StorageResourceGroup $(StorageResourceGroup) -ContainerName $(ContainerName) -BackupFileName $(BackupFileName)'
+    ScriptArguments: '-ApiManagementName ${{ parameters.ApiManagementName }} -ApiManagementResourceGroup ${{ parameters.ApiManagementResourceGroup }} -StorageAccountName ${{ parameters.StorageAccountName }} -StorageResourceGroup ${{ parameters.StorageResourceGroup }} -ContainerName ${{ parameters.ContainerName }} -BackupFileName ${{ parameters.BackupFileName }}'
     azurePowerShellVersion: 'LatestVersion'
