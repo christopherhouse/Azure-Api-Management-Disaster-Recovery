@@ -15,6 +15,14 @@ param(
     $BackupFileName
 )
 
+Write-Host "Script called with the following parameters:"
+Write-Host "** ApiManagementName: $ApiManagementName"
+Write-Host "** ApiManagementResourceGroup: $ApiManagementResourceGroup"
+Write-Host "** StorageAccountName: $StorageAccountName"
+Write-Host "** StorageResourceGroup: $StorageResourceGroup"
+Write-Host "** ContainerName: $ContainerName"
+Write-Host "** BackupFileName: $BackupFileName"
+
 Write-Host "Restoring to Api Management instance $ApiManagementName from $BackupFileName"
 
 Write-Host "Establishing storage context"
@@ -23,6 +31,6 @@ $storageKey = (Get-AzStorageAccountKey -ResourceGroupName $StorageResourceGroup 
 $storageContext = New-AzStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageKey
 
 Write-Host "Begining restore operation, this will take a while"
-Restore-AzApiManagement -ResourceGroupName $apiManagementResourceGroup -Name $apiManagementName `
-    -StorageContext $storageContext -SourceContainerName $containerName -SourceBlobName $BackupFileName
+Restore-AzApiManagement -ResourceGroupName $ApiManagementResourceGroup -Name $ApiManagementName `
+    -StorageContext $StorageContext -SourceContainerName $ContainerName -SourceBlobName $BackupFileName
 Write-Host "Restore operation complete"
